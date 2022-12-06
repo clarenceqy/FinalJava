@@ -1,13 +1,11 @@
-package com.tandon.finaljava;
+package com.tandon.finaljava.Spring;
 
 import com.tandon.finaljava.Controller.LoginController;
-import com.tandon.finaljava.ScheduleApplication;
-import org.springframework.context.ApplicationListener;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,6 +21,7 @@ public class StageInitializer implements ApplicationListener<ScheduleApplication
         this.applicationTitle = applicationTitle;
         this.fxWeaver = fxWeaver;
     }
+
     @Override
     public void onApplicationEvent(ScheduleApplication.StageReadyEvent event) {
         Stage stage = event.getStage();

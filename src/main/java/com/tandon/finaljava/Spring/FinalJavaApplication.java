@@ -1,7 +1,6 @@
-package com.tandon.finaljava;
+package com.tandon.finaljava.Spring;
 
-import com.sun.glass.ui.Application;
-import org.springframework.boot.SpringApplication;
+import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication

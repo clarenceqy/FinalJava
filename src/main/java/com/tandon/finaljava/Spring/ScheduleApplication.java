@@ -1,4 +1,4 @@
-package com.tandon.finaljava;
+package com.tandon.finaljava.Spring;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,14 +15,12 @@ public class ScheduleApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        System.out.println("Started");
         applicationContext.publishEvent(new StageReadyEvent(stage));
     }
 
     @Override
     public void init() {
         applicationContext = new SpringApplicationBuilder(ScheduleApplication.class).run();
-        System.out.println("Started");
     }
 
     @Override
