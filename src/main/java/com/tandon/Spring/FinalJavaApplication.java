@@ -1,7 +1,8 @@
-package com.tandon.finaljava.Spring;
+package com.tandon.Spring;
 
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication
 public class FinalJavaApplication {

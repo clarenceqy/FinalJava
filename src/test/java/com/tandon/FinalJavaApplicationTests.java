@@ -1,4 +1,4 @@
-package com.tandon.finaljava;
+package com.tandon;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
