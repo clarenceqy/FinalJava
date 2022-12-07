@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
-
 /**
  * @author Yichao Qin
  */
@@ -29,7 +28,6 @@ public class ScheduleApplication extends Application {
                     ac.registerBean(Parameters.class, this::getParameters);
                     ac.registerBean(HostServices.class, this::getHostServices);
                 };
-        System.out.println("OOOO");
         this.context = new SpringApplicationBuilder()
                 .sources(FinalJavaApplication.class)
                 .initializers(initializer)

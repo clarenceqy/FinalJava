@@ -5,12 +5,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Yichao Qin
  */
 @Component
+@FxmlView("/views/login.fxml")
 public class LoginVC {
     @FXML
     public Label usernameLabel;

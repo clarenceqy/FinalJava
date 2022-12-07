@@ -1,9 +1,11 @@
 package com.tandon.Spring;
 
+import com.tandon.controllers.LoginVC;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -19,33 +21,23 @@ import java.net.URL;
 @Component
 public class StageInitializer implements ApplicationListener<ScheduleApplication.StageReadyEvent> {
     private final String applicationTitle;
-    private final Resource fxml;
     private final ApplicationContext applicationContext;
 
     public StageInitializer(@Value("${spring.application.ui.title}") String applicationTitle,
-                            @Value("classpath:/views/login.fxml") Resource resource,
                             ApplicationContext ac) {
         this.applicationTitle = applicationTitle;
-        this.fxml = resource;
         this.applicationContext = ac;
     }
 
     @Override
     public void onApplicationEvent(ScheduleApplication.StageReadyEvent event) {
-        try {
-            Stage stage = event.getStage();
-            URL url = this.fxml.getURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(url);
-            fxmlLoader.setControllerFactory(applicationContext::getBean);
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 600,500);
-            stage.setResizable(false);
-            stage.setScene(scene);
-            stage.setTitle(this.applicationTitle);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Stage stage = event.getStage();
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(LoginVC.class);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle(this.applicationTitle);
+        stage.show();
     }
 
 
