@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tandon.controllers.CalenderVC">
+    <children>
+        <HBox prefHeight="42.0" prefWidth="600.0">
+            <children>
+                <ToolBar prefHeight="40.0" prefWidth="600.0" HBox.hgrow="ALWAYS">
+                    <items>
+                        <Button fx:id="reserveBtn" mnemonicParsing="false" onAction="#onReserverBtnClicked" text="Reserve" />
+                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#onCancelBtnClicked" text="Cancel" />
+                  <ComboBox fx:id="datePicker" onAction="#ondatePickerAction" prefWidth="150.0" />
+                    </items>
+                </ToolBar>
+            </children>
+        </HBox>
+        <SplitPane VBox.vgrow="ALWAYS">
+            <items>
+                <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true">
+                    <content>
+                        <AnchorPane>
+                            <children>
+                                <SplitPane fx:id="schedulesplitPane" dividerPositions="0.1067" prefHeight="330.0" prefWidth="677.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <items>
+                                        <SplitPane dividerPositions="0.3" maxWidth="84.0" minWidth="84.0" prefWidth="84.0">
+                                            <items>
+                                                <ScrollBar fx:id="scrollBar" blockIncrement="1.0" max="12.0" maxWidth="15.0" minWidth="15.0" orientation="VERTICAL" prefWidth="15.0" visibleAmount="10.0" />
+                                                <TableView fx:id="timeslotview" maxWidth="69.0" minWidth="69.0" prefWidth="69.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="header" editable="false" minWidth="69.0" prefWidth="69.0" sortable="false" text="Time" />
+                                                    </columns>
+                                                    <padding>
+                                                        <Insets bottom="15.0" />
+                                                    </padding>
+                                                </TableView>
+                                            </items>
+                                        </SplitPane>
+                                        <TableView fx:id="scheduletable" maxWidth="1.7976931348623157E308" prefHeight="328.0" prefWidth="600.0" />
+                                    </items>
+                                </SplitPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </items>
+        </SplitPane>
+    </children>
+</VBox>
