@@ -2,11 +2,13 @@ package com.tandon.controllers;
 
 import com.tandon.DAO.POJOs.UserSession;
 import com.tandon.DAO.Service.UserSessionService;
+import com.tandon.Stage.StageSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +42,30 @@ public class LoginVC implements ApplicationContextAware {
 
     @FXML
     public void initialize() {
+        if (userservice.getList().size() == 0) {
+            UserSession userSession = applicationContext.getBean(UserSession.class);
+            userSession.setLevel(0);
+            userSession.setUsername("admin");
+            userSession.setPassword("admin");
+            userservice.add(userSession);
+            userSession.setPassword("");
+        }
     }
 
     @FXML
-    public void handleSubmitButtonAction(){
+    public void handleSubmitButtonAction() {
         String usernameinput = this.textField.getText();
         String passwordinput = this.passwordField.getText();
-
-        //UserSession userSession = userservice.findByUsernameAndPassword(usernameinput,passwordinput);
+        UserSession userSession = userservice.findByUsernameAndPassword(usernameinput, passwordinput);
+        if (userSession != null) {
+            applicationContext.publishEvent(new StageSwitchEvent((Stage) this.textField.getScene().getWindow()));
+        } else {
+            applicationContext.publishEvent(new StageSwitchEvent((Stage) this.textField.getScene().getWindow()));
+        }
     }
 
     @FXML
-    public void handleCancelButtonAction(){
+    public void handleCancelButtonAction() {
         textField.clear();
         passwordField.clear();
     }

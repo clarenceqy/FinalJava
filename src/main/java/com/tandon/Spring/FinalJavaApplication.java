@@ -7,9 +7,9 @@ import net.rgielen.fxweaver.spring.SpringFxWeaver;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@SpringBootApplication(scanBasePackages = "com.tandon", exclude = DataSourceAutoConfiguration.class)
@@ -27,9 +27,9 @@ public class FinalJavaApplication {
         return new SpringFxWeaver(applicationContext);
     }
 
-//    @Bean
-//    public UserSession userSession(ConfigurableApplicationContext applicationContext){
-//        return new UserSession();
-//    }
+    @Bean
+    public UserSession userSession(ConfigurableApplicationContext applicationContext){
+        return new UserSession();
+    }
 
 }

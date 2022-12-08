@@ -40,7 +40,6 @@ public class UserSession {
         this.id = id;
     }
 
-    @Id
     public int getId() {
         return id;
     }

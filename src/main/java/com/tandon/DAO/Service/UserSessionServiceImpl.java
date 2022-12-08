@@ -1,7 +1,5 @@
 package com.tandon.DAO.Service;
 
-import java.util.List;
-
 import com.tandon.DAO.POJOs.UserSession;
 import com.tandon.DAO.Repo.UserSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +7,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class UserSessionServiceImpl implements UserSessionService{
+public class UserSessionServiceImpl implements UserSessionService {
 
     @Autowired
     private UserSessionRepository repository;
@@ -18,7 +18,6 @@ public class UserSessionServiceImpl implements UserSessionService{
     @Override
     public void add(UserSession user) {
         repository.save(user);
-
     }
 
     @Override
