@@ -1,7 +1,10 @@
 package com.tandon.controllers;
 
+import com.tandon.DAO.POJOs.Calender;
 import com.tandon.DAO.POJOs.Schedule;
 import com.tandon.DAO.POJOs.Timeblock;
+import com.tandon.DAO.POJOs.UserSession;
+import com.tandon.DAO.Service.CalenderService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,14 +14,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @FxmlView("/views/calender.fxml")
-public class CalenderVC {
+public class CalenderVC implements ApplicationContextAware {
 
     //private final ApplicationContext applicationContext;
     private final int comboxlen = 12;
@@ -37,28 +46,59 @@ public class CalenderVC {
     @FXML
     private ScrollBar scrollBar;
 
-    ObservableList timeblocklist;
-    ObservableList timeslotlist;
+    private ObservableList timeblocklist;
+    private ObservableList timeslotlist;
+    private Schedule schedule;
+
+    @Autowired
+    private CalenderService calenderService;
+    private ApplicationContext applicationContext;
 
     @FXML
     public void initialize() {
         initCombobox();
-        initializeSchecduleView();
+        initSchedule();
+        initializeScheduleView();
+        updateSchedule((String) datePicker.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     public void onReserverBtnClicked() {
+        Timeblock tb = this.scheduletable.getSelectionModel().getSelectedItem();
+        Calender calender = new Calender();
+        int day = this.scheduletable.getFocusModel().getFocusedCell().getColumn() + 1;
+        calender.setDate((String) this.datePicker.getSelectionModel().getSelectedItem());
+        calender.setTime(tb.getTimename());
+        calender.setDay(day);
+        calender.setClient(LoginVC.name);
+        boolean addresult = calenderService.add(calender);
+        if(addresult){
+            tb.setLocationElement(LoginVC.name,day-1);
+            scheduletable.refresh();
+        }
 
     }
 
     @FXML
     public void onCancelBtnClicked() {
-
+        Timeblock tb = this.scheduletable.getSelectionModel().getSelectedItem();
+        String date = (String) this.datePicker.getSelectionModel().getSelectedItem();
+        String time = tb.getTimename();
+        int day = this.scheduletable.getFocusModel().getFocusedCell().getColumn() + 1;
+        Calender c = calenderService.getCalender(date,day,time);
+        if(c != null && c.getClient().equals(LoginVC.name)){
+            calenderService.remove(date,day,time);
+            tb.setLocationElement("/",day-1);
+            scheduletable.refresh();
+        }
     }
 
     @FXML
     public void ondatePickerAction(){
         String selectedDate = (String)datePicker.getValue();
+        initSchedule();
+        initializeScheduleView();
+        updateSchedule(selectedDate);
     }
 
     public void initCombobox() {
@@ -79,9 +119,24 @@ public class CalenderVC {
         }
         ObservableList<String> list = FXCollections.observableArrayList(names);
         datePicker.setItems(list);
+        datePicker.getSelectionModel().selectFirst();
     }
 
-    public void initializeSchecduleView() {
+    public void initSchedule(){
+        this.schedule = new Schedule("asd",31);
+    }
+
+    public void updateSchedule(String date){
+        List<Calender> calenders = calenderService.getList(date);
+        for(Calender calender : calenders){
+            String time = calender.getTime();
+            Timeblock tb = (Timeblock) timeblocklist.get(Schedule.convertIdx(time));
+            tb.setLocationElement(calender.getClient(),calender.getDay()-1);
+        }
+        scheduletable.refresh();
+    }
+
+    public void initializeScheduleView() {
         scheduletable.getSelectionModel().setCellSelectionEnabled(true);
         timeslotview.addEventFilter(ScrollEvent.ANY, Event::consume);
 
@@ -130,10 +185,9 @@ public class CalenderVC {
         }
         timeblocklist = FXCollections.observableArrayList();
         timeslotlist = FXCollections.observableArrayList();
-        Schedule schedule = new Schedule("asd",31);
         for (int i = 0; i < 12; i++) {
-            timeblocklist.add(schedule.getSingleTimeBlock(i));
-            timeslotlist.add(schedule.getSingleTimeBlock(i));
+            timeblocklist.add(this.schedule.getSingleTimeBlock(i));
+            timeslotlist.add(this.schedule.getSingleTimeBlock(i));
         }
         scheduletable.setItems(timeblocklist);
         scheduletable.setStyle("-fx-font-size :14");
@@ -150,5 +204,9 @@ public class CalenderVC {
             }
         });
 
+    }
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

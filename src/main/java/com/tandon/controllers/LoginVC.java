@@ -40,6 +40,8 @@ public class LoginVC implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    static String name;
+
     @FXML
     public void initialize() {
         if (userservice.getList().size() == 0) {
@@ -49,6 +51,7 @@ public class LoginVC implements ApplicationContextAware {
             userSession.setPassword("admin");
             userservice.add(userSession);
             userSession.setPassword("");
+            this.name = "admin";
         }
     }
 
@@ -58,9 +61,11 @@ public class LoginVC implements ApplicationContextAware {
         String passwordinput = this.passwordField.getText();
         UserSession userSession = userservice.findByUsernameAndPassword(usernameinput, passwordinput);
         if (userSession != null) {
+            this.name = usernameinput;
             applicationContext.publishEvent(new StageSwitchEvent((Stage) this.textField.getScene().getWindow()));
         } else {
-            applicationContext.publishEvent(new StageSwitchEvent((Stage) this.textField.getScene().getWindow()));
+//            this.name = "admin";
+//            applicationContext.publishEvent(new StageSwitchEvent((Stage) this.textField.getScene().getWindow()));
         }
     }
 

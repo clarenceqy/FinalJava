@@ -33,6 +33,51 @@ public class Schedule {
         timeblocks.add(new Timeblock("18:00-\n23:59"));
     }
 
+    public static int convertIdx(String time){
+        int res = -1;
+        switch (time){
+            case "00:00-\n08:00":
+                res = 0;
+                break;
+            case "08:00-\n09:00":
+                res = 1;
+                break;
+            case "09:00-\n10:00":
+                res = 2;
+                break;
+            case "10:00-\n11:00":
+                res = 3;
+                break;
+            case "11:00-\n12:00":
+                res = 4;
+                break;
+            case "12:00-\n13:00":
+                res = 5;
+                break;
+            case "13:00-\n14:00":
+                res = 6;
+                break;
+            case "14:00-\n15:00":
+                res = 7;
+                break;
+            case "15:00-\n16:00":
+                res = 8;
+                break;
+            case "16:00-\n17:00":
+                res = 9;
+                break;
+            case "17:00-\n18:00":
+                res = 10;
+                break;
+            case "18:00-\n23:59":
+                res = 11;
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        return res;
+    }
+
     public String getName() {
         return name.get();
     }
